@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,9 +59,74 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+        takB.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sprawdzanie(true);
+                        numerPytania++;
+                        wyswietlPytanie(numerPytania);
+                    }
+                }
+        );
+        nieB.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sprawdzanie(false);
+                        numerPytania++;
+                        wyswietlPytanie(numerPytania);
+                    }
+                }
+        );
+        podpowiedzB.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, pytania.get(numerPytania).getPodpowiedz(), Toast.LENGTH_SHORT).show();
+                        pytania.get(numerPytania).setBranoPodpowidz(true);
+                    }
+                }
+        );
+
     }
     private void wyswietlPytanie(int ktorePytanie){
-        pytanieT.setText(pytania.get(ktorePytanie).getTrescPytania());
-        zdjP.setImageResource(pytania.get(ktorePytanie).getIdObrazek());
+        if(numerPytania == pytania.size()){
+            zdjP.setVisibility(View.INVISIBLE);
+
+            takB.setVisibility(View.INVISIBLE);
+            nieB.setVisibility(View.INVISIBLE);
+            nastepneB.setVisibility(View.INVISIBLE);
+            podpowiedzB.setVisibility(View.INVISIBLE);
+
+            podsumowanie();
+        }
+        else{
+            pytanieT.setText(pytania.get(ktorePytanie).getTrescPytania());
+            zdjP.setImageResource(pytania.get(ktorePytanie).getIdObrazek());
+        }
+    }
+    private void sprawdzanie(boolean wybor){
+        if(pytania.get(numerPytania).getOdpowiedz() == wybor){
+            pytania.get(numerPytania).setCzyOdpOk(true);
+            Toast.makeText(this, "Poprawna odpowiedź!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            pytania.get(numerPytania).setCzyOdpOk(false);
+            Toast.makeText(this, "Zła odpowiedź!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void podsumowanie(){
+        int dobrze = 0;
+        for(int i = 0; i < pytania.size(); i++){
+            if(pytania.get(i).getCzyOdpOk()){
+                dobrze++;
+            }
+            if(pytania.get(i).getCzyOdpOk() && !pytania.get(i).getBranoPodpowidz()){
+                dobrze++;
+            }
+        }
+
+        pytanieT.setText("Zdobyto łącznie " + dobrze + " punktów!");
     }
 }

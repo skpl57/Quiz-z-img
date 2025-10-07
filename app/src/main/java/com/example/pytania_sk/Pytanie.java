@@ -6,6 +6,7 @@ public class Pytanie {
     private boolean odpowiedz;
     private String podpowiedz;
     private boolean czyOdpOk;
+    private boolean branoPodpowidz;
 
     public Pytanie(int idObrazek, String trescPytania, boolean odpowiedz, String podpowiedz) {
         this.idObrazek = idObrazek;
@@ -13,6 +14,14 @@ public class Pytanie {
         this.odpowiedz = odpowiedz;
         this.podpowiedz = podpowiedz;
         czyOdpOk = false;
+    }
+
+    public boolean getBranoPodpowidz() {
+        return branoPodpowidz;
+    }
+
+    public void setBranoPodpowidz(boolean branoPodpowidz) {
+        this.branoPodpowidz = branoPodpowidz;
     }
 
     public void setCzyOdpOk(boolean czyOdpOk) {
@@ -27,7 +36,7 @@ public class Pytanie {
         return trescPytania;
     }
 
-    public boolean isOdpowiedz() {
+    public boolean getOdpowiedz() {
         return odpowiedz;
     }
 
@@ -35,7 +44,7 @@ public class Pytanie {
         return podpowiedz;
     }
 
-    public boolean isCzyOdpOk() {
+    public boolean getCzyOdpOk() {
         return czyOdpOk;
     }
 }
