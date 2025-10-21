@@ -1,5 +1,6 @@
 package com.example.pytania_sk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -83,8 +84,12 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, pytania.get(numerPytania).getPodpowiedz(), Toast.LENGTH_SHORT).show();
-                        pytania.get(numerPytania).setBranoPodpowidz(true);
+//                      Toast.makeText(MainActivity.this, pytania.get(numerPytania).getPodpowiedz(), Toast.LENGTH_SHORT).show();
+//                      pytania.get(numerPytania).setBranoPodpowidz(true);
+                        Intent intencja = new Intent(MainActivity.this, PodpowiedzActivity.class);
+                        intencja.putExtra("NUMERPYTANIA", numerPytania);
+                        startActivity(intencja);
+
                     }
                 }
         );
