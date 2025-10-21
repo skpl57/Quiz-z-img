@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView pytanieT;
     private ImageView zdjP;
     private int numerPytania = 0;
+    private int punkty = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +38,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        pytania.add(new Pytanie(R.drawable.szop, "Czy to jest szop pracz?", true, "Pochodzi z rodziny szopowatych."));
-        pytania.add(new Pytanie(R.drawable.szczur, "Czy to Remi?", true, "Jest postacią filmu \"Ratatuj\"."));
-        pytania.add(new Pytanie(R.drawable.kamien, "Czy ten kamień się wstydzi?", true, "Ewidentnie ma czerwone policzki."));
-        pytania.add(new Pytanie(R.drawable.kowadlo, "Czy to kowadło jest zardzewiałe?", false, "Nie ma na nim rdzy."));
+        pytania = Repozytorium.zwrocWszystkiePytania();
+
 
         takB = findViewById(R.id.takButton);
         nieB = findViewById(R.id.nieButton);
@@ -48,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
         pytanieT = findViewById(R.id.trescPytania);
         zdjP = findViewById(R.id.zdjecie);
         wyswietlPytanie(0);
+
+        if(savedInstanceState != null){
+            numerPytania = savedInstanceState.getInt("NUMERPYTANIA");
+            punkty = savedInstanceState.getInt("PUNKTY");
+            wyswietlPytanie(numerPytania);
+        }
+
 
         nastepneB.setOnClickListener(
                 new View.OnClickListener() {
@@ -85,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 //                      Toast.makeText(MainActivity.this, pytania.get(numerPytania).getPodpowiedz(), Toast.LENGTH_SHORT).show();
-//                      pytania.get(numerPytania).setBranoPodpowidz(true);
+                        pytania.get(numerPytania).setBranoPodpowidz(true);
                         Intent intencja = new Intent(MainActivity.this, PodpowiedzActivity.class);
                         intencja.putExtra("NUMERPYTANIA", numerPytania);
                         startActivity(intencja);
@@ -111,10 +118,16 @@ public class MainActivity extends AppCompatActivity {
             zdjP.setImageResource(pytania.get(ktorePytanie).getIdObrazek());
         }
     }
+
     private void sprawdzanie(boolean wybor){
         if(pytania.get(numerPytania).getOdpowiedz() == wybor){
             pytania.get(numerPytania).setCzyOdpOk(true);
             Toast.makeText(this, "Poprawna odpowiedź!", Toast.LENGTH_SHORT).show();
+            punkty += 5;
+
+            if(!pytania.get(numerPytania).getBranoPodpowidz()){
+                punkty += 5;
+            }
         }
         else{
             pytania.get(numerPytania).setCzyOdpOk(false);
@@ -122,16 +135,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void podsumowanie(){
-        int dobrze = 0;
-        for(int i = 0; i < pytania.size(); i++){
-            if(pytania.get(i).getCzyOdpOk()){
-                dobrze++;
-            }
-            if(pytania.get(i).getCzyOdpOk() && !pytania.get(i).getBranoPodpowidz()){
-                dobrze++;
-            }
-        }
 
-        pytanieT.setText("Zdobyto łącznie " + dobrze + " punktów!");
+
+        pytanieT.setText("Zdobyto łącznie " + punkty + " punktów!");
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("NUMERPYTANIA", numerPytania);
+        outState.putInt("PUNKTY", punkty);
     }
 }

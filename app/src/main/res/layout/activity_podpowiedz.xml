@@ -5,14 +5,35 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background = "#a7c3fc"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".PodpowiedzActivity">
 
+
+    <ImageView
+        android:id="@+id/podpowiedzImg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_marginBottom="24dp"
+        app:srcCompat="@drawable/szop" />
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tytulText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:textSize="32sp"
         android:gravity="center"
         android:text="TextView" />
+
+    <TextView
+        android:id="@+id/podpowiedzText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:text="TextView" />
+
+
 </LinearLayout>

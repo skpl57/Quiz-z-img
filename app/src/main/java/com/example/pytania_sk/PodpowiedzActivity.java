@@ -1,6 +1,7 @@
 package com.example.pytania_sk;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -9,8 +10,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 public class PodpowiedzActivity extends AppCompatActivity {
-    private TextView podpowiedzTekst;
+    private TextView podpowiedzTekst, tytulTekst;
+    private ImageView obrazekPodpowiedzi;
+    private ArrayList<Pytanie> pytania = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +27,16 @@ public class PodpowiedzActivity extends AppCompatActivity {
             return insets;
         });
 
-        int numerPytania = getIntent().getIntExtra("NUMERPYTANIA", 0);
+        pytania = Repozytorium.zwrocWszystkiePytania();
 
+        int numerPytania = getIntent().getIntExtra("NUMERPYTANIA", 0);
+        podpowiedzTekst = findViewById(R.id.podpowiedzText);
+        tytulTekst = findViewById(R.id.tytulText);
+        obrazekPodpowiedzi = findViewById(R.id.podpowiedzImg);
+
+        tytulTekst.setText("Podpowiedz do pytania nr " + (numerPytania + 1));
+        podpowiedzTekst.setText(pytania.get(numerPytania).getPodpowiedz());
+        obrazekPodpowiedzi.setImageResource(pytania.get(numerPytania).getIdObrazek());
     }
 
 }
